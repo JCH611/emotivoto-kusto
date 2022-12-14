@@ -1,0 +1,66 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: emojivoto
+metadata:
+  name: linkerd-kusto
+resources:
+- ./templates/emoji.yaml
+- ./templates/vote-bot.yaml
+- ./templates/voting.yaml
+- ./templates/web.yaml
+- ./templates/serviceaccount.yaml
+- ./templates/services.yaml
+patchesJson6902:
+- target:
+    group: apps
+    kind: Deployment
+    name: emoji
+    namespace: emojivoto
+    version: v1
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/annotations
+      value: {}
+    - op: add
+      path: /spec/template/metadata/annotations/linkerd.io~1inject
+      value: enabled
+- target:
+    group: apps
+    kind: Deployment
+    name: voting
+    namespace: emojivoto
+    version: v1
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/annotations
+      value: {}
+    - op: add
+      path: /spec/template/metadata/annotations/linkerd.io~1inject
+      value: enabled
+- target:
+    group: apps
+    kind: Deployment
+    name: vote-bot
+    namespace: emojivoto
+    version: v1
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/annotations
+      value: {}
+    - op: add
+      path: /spec/template/metadata/annotations/linkerd.io~1inject
+      value: enabled
+- target:
+    group: apps
+    kind: Deployment
+    name: web
+    namespace: emojivoto
+    version: v1
+  patch: |-
+    - op: add
+      path: /spec/template/metadata/annotations
+      value: {}
+    - op: add
+      path: /spec/template/metadata/annotations/linkerd.io~1inject
+      value: enabled
+
